@@ -5,24 +5,47 @@ export const mutationsTypes = {
   registerStart: '[auth] registerStart',
   registerSuccess: '[auth] registerSuccess',
   registerFailure: '[auth] registerFailure',
+
   loginStart: '[auth] loginStart',
   loginSuccess: '[auth] loginSuccess',
   loginFailure: '[auth] loginFailure',
+
+  getCurrentUserStart: '[auth] getCurrentUserStart',
+  getCurrentUserSuccess: '[auth] getCurrentUserSuccess',
+  getCurrentUserFailure: '[auth] getCurrentUserFailure',
 };
 
 export const actionTypes = {
   register: '[auth] register',
   login: '[auth] login',
+  getCurrentUser: '[auth] getCurrentUser',
+};
+
+export const getterTypes = {
+  currentUser: '[auth] currentUser',
+  isLoggedIn: '[auth] isLoggedIn',
+  isAnonymous: '[auth] isAnonymous',
 };
 
 export const auth = {
   state: () => ({
     isSubmiting: false,
+    isLoading: false,
     currentUser: null,
     validationErrors: null,
     isLoggedIn: null,
   }),
-  getters: {},
+  getters: {
+    [getterTypes.currentUser]: (state) => {
+      return state.currentUser;
+    },
+    [getterTypes.isLoggedIn]: (state) => {
+      return Boolean(state.isLoggedIn);
+    },
+    [getterTypes.isAnonymous]: (state) => {
+      return state.isLoggedIn === false;
+    },
+  },
   mutations: {
     [mutationsTypes.registerStart](state) {
       state.isSubmiting = true;
@@ -49,6 +72,19 @@ export const auth = {
     [mutationsTypes.loginFailure](state, payload) {
       state.isSubmiting = false;
       state.validationErrors = payload;
+    },
+    [mutationsTypes.getCurrentUserStart](state) {
+      state.isLoading = true;
+    },
+    [mutationsTypes.getCurrentUserSuccess](state, payload) {
+      state.isLoading = false;
+      state.currentUser = payload;
+      state.isLoggedIn = true;
+    },
+    [mutationsTypes.getCurrentUserFailure](state) {
+      state.isLoading = false;
+      state.isLoggedIn = false;
+      state.currentUser = null;
     },
   },
   actions: {
@@ -85,6 +121,23 @@ export const auth = {
               mutationsTypes.loginFailure,
               result.response.data.errors
             );
+          });
+      });
+    },
+    [actionTypes.getCurrentUser](context) {
+      return new Promise((resolve) => {
+        context.commit(mutationsTypes.getCurrentUserStart);
+        authApi
+          .getCurrentUser()
+          .then((response) => {
+            context.commit(
+              mutationsTypes.getCurrentUserSuccess,
+              response.data.user
+            );
+            resolve(response.data.user);
+          })
+          .catch(() => {
+            context.commit(mutationsTypes.getCurrentUserFailure);
           });
       });
     },
