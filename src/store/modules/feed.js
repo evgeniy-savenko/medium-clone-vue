@@ -1,12 +1,12 @@
 import feedApi from '@/api/feed';
 
-export const mutationsTypes = {
+export const mutationTypes = {
   getFeedStart: '[feed] Get feed start',
   getFeedSuccess: '[feed] Get feed success',
   getFeedFailure: '[feed] Get feed failure',
 };
 
-export const actionsTypes = {
+export const actionTypes = {
   getFeed: '[feed] Get feed',
 };
 
@@ -18,30 +18,30 @@ export const feed = {
   }),
   getters: {},
   mutations: {
-    [mutationsTypes.getFeedStart](state) {
+    [mutationTypes.getFeedStart](state) {
       state.isLoading = true;
       state.data = null;
     },
-    [mutationsTypes.getFeedSuccess](state, payload) {
+    [mutationTypes.getFeedSuccess](state, payload) {
       state.isLoading = false;
       state.data = payload;
     },
-    [mutationsTypes.getFeedFailure](state) {
+    [mutationTypes.getFeedFailure](state) {
       state.isLoading = false;
     },
   },
   actions: {
-    [actionsTypes.getFeed](context, {apiUrl}) {
+    [actionTypes.getFeed](context, {apiUrl}) {
       return new Promise((resolve) => {
-        context.commit(mutationsTypes.getFeedStart);
+        context.commit(mutationTypes.getFeedStart, apiUrl);
         feedApi
           .getFeed(apiUrl)
           .then((response) => {
-            context.commit(mutationsTypes.getFeedSuccess, response.data);
+            context.commit(mutationTypes.getFeedSuccess, response.data);
             resolve(response.data);
           })
           .catch(() => {
-            context.commit(mutationsTypes.getFeedFailure);
+            context.commit(mutationTypes.getFeedFailure);
           });
       });
     },
