@@ -3,6 +3,7 @@ import {auth} from '@/store/modules/auth';
 import {feed} from '@/store/modules/feed';
 import {popularTags} from '@/store/modules/popularTags';
 import {article} from '@/store/modules/article';
+import {createArticle} from '@/store/modules/createArticle';
 
 export default createStore({
   modules: {
@@ -10,5 +11,6 @@ export default createStore({
     feed: feed,
     popularTags: popularTags,
     article: article,
+    createArticle: createArticle,
   },
 });
