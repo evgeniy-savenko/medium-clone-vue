@@ -62,7 +62,7 @@
         <li class="nav-item">
           <router-link
             class="nav-link"
-            :to="{name: 'globalFeed', params: {slug: currentUser.username}}"
+            :to="{name: 'userProfile', params: {slug: currentUser.username}}"
             active-class="active"
           >
             <img class="user-pic" :src="currentUser.image" />
