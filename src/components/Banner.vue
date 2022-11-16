@@ -2,7 +2,7 @@
   <div class="banner">
     <div class="container">
       <h1>Medium Clone</h1>
-      <p>A place to share knowledge</p>
+      <p>Created by Savenko Evgeniy</p>
     </div>
   </div>
 </template>

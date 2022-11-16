@@ -33,7 +33,7 @@
                 <input
                   type="text"
                   class="form-control form-control-lg"
-                  placeholder="Enter Tags"
+                  placeholder="Enter tags"
                   v-model="tagList"
                 />
               </fieldset>
@@ -41,9 +41,9 @@
                 <button
                   type="submit"
                   class="btn btn-lg pull-xs-right btn-primary"
-                  :disable="isSubmiting"
+                  :disabled="isSubmitting"
                 >
-                  Publish article
+                  Publish Article
                 </button>
               </fieldset>
             </fieldset>
@@ -55,13 +55,9 @@
 </template>
 
 <script>
-import McvValidationErrors from '@/components/ValidationErrors.vue';
-
+import McvValidationErrors from '@/components/ValidationErrors';
 export default {
   name: 'McvArticleForm',
-  components: {
-    McvValidationErrors,
-  },
   props: {
     initialValues: {
       type: Object,
@@ -71,17 +67,20 @@ export default {
       type: Object,
       required: false,
     },
-    isSubmiting: {
+    isSubmitting: {
       type: Boolean,
       required: true,
     },
   },
+  components: {
+    McvValidationErrors,
+  },
   data() {
     return {
-      title: '',
-      description: '',
-      body: '',
-      tagList: '',
+      title: this.initialValues.title,
+      description: this.initialValues.description,
+      body: this.initialValues.body,
+      tagList: this.initialValues.tagList.join(' '),
     };
   },
   methods: {
@@ -97,5 +96,3 @@ export default {
   },
 };
 </script>
-
-<style></style>
